@@ -6,11 +6,17 @@
 package dto;
 
 public class Cuenta {
-    int id_cuenta;
+
+    private int id_cuenta;
     private String nombre;
     private float SaldoInicial;
 
     public Cuenta() {
+    }
+
+    public Cuenta(int id_cuenta, String nombre) {
+        this.id_cuenta = id_cuenta;
+        this.nombre = nombre;
     }
 
     public int getId_cuenta() {
@@ -20,8 +26,7 @@ public class Cuenta {
     public void setId_cuenta(int id_cuenta) {
         this.id_cuenta = id_cuenta;
     }
-    
-    
+
     public String getNombre() {
         return nombre;
     }
@@ -40,9 +45,7 @@ public class Cuenta {
 
     @Override
     public String toString() {
-        return "Cuenta{" + "nombre=" + nombre + ", SaldoInicial=" + SaldoInicial + '}';
+        return this.nombre;
     }
 
-
-    
 }

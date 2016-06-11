@@ -3,7 +3,6 @@ package factory;
 import dal.Configuracion;
 import dao.*;
 
-
 public abstract class FactoryDao {
 
     protected static FactoryDao instancia;
@@ -20,6 +19,10 @@ public abstract class FactoryDao {
     }
 
     public abstract CuentaDao getNewCuentaDao();
+
+    public abstract CategoriaDao getNewCategoriasDao();
+
+    public abstract TransaccionesDao getNewTransaccionesDao();
 
     private String getDbEngine() {
         return dbEngine;

@@ -40,7 +40,7 @@ public class Categoria {
 
     @Override
     public String toString() {
-        return "Categoria{" + "idCategoria=" + idCategoria + ", NombreCategoria=" + NombreCategoria + ", TipoCategoria=" + TipoCategoria + '}';
+        return this.NombreCategoria;
     }
     
     

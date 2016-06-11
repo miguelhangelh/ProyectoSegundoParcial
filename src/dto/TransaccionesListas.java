@@ -5,18 +5,22 @@
  */
 package dto;
 
-import java.util.Date;
+import java.sql.Date;
 
+/**
+ *
+ * @author usuario
+ */
+public class TransaccionesListas {
 
-public class Transacciones {
     private int idTransacciones;
-    private int idCategoria;
+    private String nombreCategoria;
     private float monto;
-    private String fecha;
+    private Date fecha;
     private String descripcion;
-    private int idCuenta;
+    private String NombreCuenta;
 
-    public Transacciones() {
+    public TransaccionesListas() {
     }
 
     public int getIdTransacciones() {
@@ -27,12 +31,12 @@ public class Transacciones {
         this.idTransacciones = idTransacciones;
     }
 
-    public int getIdCategoria() {
-        return idCategoria;
+    public String getNombreCategoria() {
+        return nombreCategoria;
     }
 
-    public void setIdCategoria(int idCategoria) {
-        this.idCategoria = idCategoria;
+    public void setNombreCategoria(String nombreCategoria) {
+        this.nombreCategoria = nombreCategoria;
     }
 
     public float getMonto() {
@@ -43,11 +47,11 @@ public class Transacciones {
         this.monto = monto;
     }
 
-    public String getFecha() {
+    public Date getFecha() {
         return fecha;
     }
 
-    public void setFecha(String fecha) {
+    public void setFecha(Date fecha) {
         this.fecha = fecha;
     }
 
@@ -59,18 +63,12 @@ public class Transacciones {
         this.descripcion = descripcion;
     }
 
-    public int getIdCuenta() {
-        return idCuenta;
+    public String getNombreCuenta() {
+        return NombreCuenta;
     }
 
-    public void setIdCuenta(int idCuenta) {
-        this.idCuenta = idCuenta;
+    public void setNombreCuenta(String NombreCuenta) {
+        this.NombreCuenta = NombreCuenta;
     }
 
-    @Override
-    public String toString() {
-        return "Transacciones{" + "idTransacciones=" + idTransacciones + ", idCategoria=" + idCategoria + ", monto=" + monto + ", fecha=" + fecha + ", descripcion=" + descripcion + ", idCuenta=" + idCuenta + '}';
-    }
-    
-    
 }

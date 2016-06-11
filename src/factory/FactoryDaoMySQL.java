@@ -2,7 +2,6 @@ package factory;
 
 import dao.*;
 
-
 class FactoryDaoMySQL extends FactoryDao {
 
     private FactoryDaoMySQL() {
@@ -17,6 +16,16 @@ class FactoryDaoMySQL extends FactoryDao {
     @Override
     public CuentaDao getNewCuentaDao() {
         return new CuentaDaoSQLServer();
+    }
+
+    @Override
+    public CategoriaDao getNewCategoriasDao() {
+        return new CategoriaDaoSQLServer();
+    }
+
+    @Override
+    public TransaccionesDao getNewTransaccionesDao() {
+        return new TransaccionesDaoSQLServer();
     }
 
 }

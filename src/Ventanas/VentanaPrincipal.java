@@ -157,14 +157,13 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenu2ActionPerformed
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        Transacciones internalFrame = new Transacciones();
+        InternalFrameTransacciones internalFrame = new InternalFrameTransacciones();
 
         if (internalFrame.isShowing()) {
             JOptionPane.showMessageDialog(null, "Ya Esta abierto!", "Advertencia", JOptionPane.ERROR_MESSAGE);
         } else {
             int x = (jDesktopPane1.getWidth() / 2) - internalFrame.getWidth() / 2;
             int y = (jDesktopPane1.getHeight() / 2) - internalFrame.getHeight() / 2;
-
             jDesktopPane1.add(internalFrame);
             internalFrame.setLocation(x, y);
             internalFrame.show();

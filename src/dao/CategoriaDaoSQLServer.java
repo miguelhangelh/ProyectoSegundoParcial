@@ -1,23 +1,22 @@
 package dao;
 
 import dal.Conexion;
+import dto.Categoria;
 import dto.Cuenta;
-import java.awt.List;
 import java.util.ArrayList;
 import java.sql.ResultSet;
-import java.util.Vector;
 
-public class CuentaDaoSQLServer extends CuentaDao {
+public class CategoriaDaoSQLServer extends CategoriaDao {
 
     @Override
-    public boolean insert(Cuenta obj) throws Exception {
+    public boolean insert(Categoria obj) throws Exception {
         Conexion objConexion = Conexion.getOrCreate();
 
         boolean id;
 
-        StringBuilder query = new StringBuilder("{call sp_cuentaInsert(");
-        query.append("'" + obj.getNombre() + "',");
-        query.append("'" + obj.getSaldoInicial() + "')");
+        StringBuilder query = new StringBuilder("{call sp_CategoriaInsert(");
+        query.append("'" + obj.getNombreCategoria() + "',");
+        query.append("'" + obj.getTipoCategoria() + "')");
         query.append("}");
         id = objConexion.ejecutarInsert(query.toString());
         if (id == false) {
@@ -28,13 +27,13 @@ public class CuentaDaoSQLServer extends CuentaDao {
     }
 
     @Override
-    public int update(Cuenta obj) throws Exception {
+    public int update(Categoria obj) throws Exception {
         Conexion objConexion = Conexion.getOrCreate();
         int upd = 0;
         StringBuilder query = new StringBuilder("{call sp_cuentaUpdate(");
-        query.append("" + obj.getId_cuenta() + ",");
-        query.append("'" + obj.getNombre() + "',");
-        query.append(obj.getSaldoInicial() + ")");
+        query.append("" + obj.getIdCategoria() + ",");
+        query.append("'" + obj.getNombreCategoria() + "',");
+        query.append("'" + obj.getTipoCategoria() + "')");
         query.append("}");
         upd = objConexion.ejecutarSimple(query.toString());
         if (upd == 0) {
@@ -57,21 +56,21 @@ public class CuentaDaoSQLServer extends CuentaDao {
     }
 
     @Override
-    public Cuenta get(int id) {
+    public Categoria get(int id) {
         try {
             Conexion objConexion = Conexion.getOrCreate();
             String query = "{call sp_cuentaSelect(" + id + ")}";
             ResultSet objResultSet = objConexion.ejecutarSelect(query);
             if (objResultSet.next()) {
-                Cuenta obj = new Cuenta();
+                Categoria obj = new Categoria();
                 int _id_cuenta = objResultSet.getInt("id_cuenta");
-                obj.setId_cuenta(_id_cuenta);
+                obj.setIdCategoria(_id_cuenta);
 
                 String _nombre_cuenta = objResultSet.getString("nombre_cuenta");
-                obj.setNombre(_nombre_cuenta);
+                obj.setNombreCategoria(_nombre_cuenta);
 
-                float _saldoInicial = objResultSet.getFloat("saldo_inicial");
-                obj.setSaldoInicial(_saldoInicial);
+                String _saldoInicial = objResultSet.getString("saldo_inicial");
+                obj.setTipoCategoria(_saldoInicial);
 
                 return obj;
             }
@@ -82,24 +81,24 @@ public class CuentaDaoSQLServer extends CuentaDao {
     }
 
     @Override
-    public ArrayList<Cuenta> getList() {
-        ArrayList<Cuenta> registros = new ArrayList<>();
+    public ArrayList<Categoria> getList() {
+        ArrayList<Categoria> registros = new ArrayList<>();
         try {
             Conexion objConexion = Conexion.getOrCreate();
-            String query = "{call sp_cuentaSelectAll()}";
+            String query = "{call sp_CategoriaSelectAll()}";
 
             ResultSet objResultSet = objConexion.ejecutarSelect(query);
             while (objResultSet.next()) {
-                Cuenta obj = new Cuenta();
+                Categoria obj = new Categoria();
 
-                int idCuenta = objResultSet.getInt("id_cuenta");
-                obj.setId_cuenta(idCuenta);
+                int id_Categoria = objResultSet.getInt("id_categoria");
+                obj.setIdCategoria(id_Categoria);
 
-                String _contactoId = objResultSet.getString("nombre_cuenta");
-                obj.setNombre(_contactoId);
+                String _nombre_Cuenta = objResultSet.getString("nombre_categoria");
+                obj.setNombreCategoria(_nombre_Cuenta);
 
-                float _nombre = objResultSet.getFloat("saldo_inicial");
-                obj.setSaldoInicial(_nombre);
+                String _nombre = objResultSet.getString("tipo_categoria");
+                obj.setTipoCategoria(_nombre);
 
                 registros.add(obj);
             }
@@ -109,26 +108,4 @@ public class CuentaDaoSQLServer extends CuentaDao {
         return registros;
     }
 
-    /**
-     *
-     * @return
-     */
-    @Override
-    public Vector<Cuenta> CargarComboBox() {
-        Vector<Cuenta> oListItem = new Vector<>();
-        try {
-            Conexion objConexion = Conexion.getOrCreate();
-            String query = "{call sp_cuentaSelectAll()}";
-
-            ResultSet objResultSet = objConexion.ejecutarSelect(query);
-            while (objResultSet.next()) {
-                Cuenta obj = new Cuenta(objResultSet.getInt(1), objResultSet.getString(2));
-
-                oListItem.addElement(obj);
-            }
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        return oListItem;
-    }
 }
