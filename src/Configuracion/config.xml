@@ -1,0 +1,12 @@
+<?xml version="1.0" ?>
+<app-config>
+	<db-config>
+		<db-engine>SQLServer</db-engine>
+		<db-host>localhost</db-host>
+		<db-port>1433</db-port>
+		<db-instance></db-instance>
+		<db-name>examen</db-name>
+		<db-user>proyecto</db-user>
+		<db-password>proyecto</db-password>
+	</db-config>
+</app-config>
