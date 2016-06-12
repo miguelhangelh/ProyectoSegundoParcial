@@ -9,7 +9,6 @@ public class Cuenta {
 
     private int id_cuenta;
     private String nombre;
-    
     private float SaldoInicial;
 
     public Cuenta() {

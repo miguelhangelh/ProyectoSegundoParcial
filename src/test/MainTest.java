@@ -20,28 +20,28 @@ public class MainTest {
             
             // Metodo para insertar
             Cuenta a = new Cuenta();
-            a.setNombre("miguelas");
+            a.setNombre("miguela");
             a.setSaldoInicial(22);   
             objDao.insert(a);
             // Metodo para actualizarç
             
-            a.setNombre("miguel");
-            a.setSaldoInicial(22);
-            a.setId_cuenta(15);
-            
-            // Metodo para eliminar
-            
-            objDao.delete(15);
-
-            // metodo para seleccionar una cuenta
-            System.out.println("devolvio " +objDao.get(13).getNombre() + " " + objDao.get(13).getSaldoInicial());
-            
-             //Metodo para cargar todos los datos de la tabla
-            ArrayList<Cuenta> id = objDao.getList();
-            for (Cuenta cuenta : id) {
-                System.out.println(cuenta.getNombre()+ " " +cuenta.getSaldoInicial());
-               
-            }
+//            a.setNombre("miguel");
+//            a.setSaldoInicial(22);
+//            a.setId_cuenta(15);
+//            
+//            // Metodo para eliminar
+//            
+//            objDao.delete(15);
+//
+//            // metodo para seleccionar una cuenta
+//            System.out.println("devolvio " +objDao.get(13).getNombre() + " " + objDao.get(13).getSaldoInicial());
+//            
+//             //Metodo para cargar todos los datos de la tabla
+//            ArrayList<Cuenta> id = objDao.getList();
+//            for (Cuenta cuenta : id) {
+//                System.out.println(cuenta.getNombre()+ " " +cuenta.getSaldoInicial());
+//               
+//            }
 
         } catch (Exception ex) {
             ex.printStackTrace();

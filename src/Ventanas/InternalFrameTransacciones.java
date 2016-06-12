@@ -27,6 +27,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
+import javax.swing.border.Border;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -56,7 +57,7 @@ public class InternalFrameTransacciones extends javax.swing.JInternalFrame imple
         DefaultTabla();
         rellenarTabla();
         jPanel2.setVisible(false);
-        OcultarColumnas();
+      //  OcultarColumnas();
         cargarDetallesCuenta();
 
     }
@@ -143,15 +144,16 @@ public class InternalFrameTransacciones extends javax.swing.JInternalFrame imple
         TransaccionesDao objDao = FactoryDao.getFactoryInstance().getNewTransaccionesDao();
         ArrayList<TransaccionesListas> id = objDao.getList();
         for (TransaccionesListas transaccionesListas : id) {
-            Object[] fila = new Object[8];
+            Object[] fila = new Object[9];
             fila[0] = transaccionesListas.getIdTransacciones();
             fila[1] = transaccionesListas.getIdCategoria();
             fila[2] = transaccionesListas.getNombreCategoria();
             fila[3] = transaccionesListas.getMonto();
             fila[4] = transaccionesListas.getFecha();
-            fila[5] = transaccionesListas.getDescripcion();
-            fila[6] = transaccionesListas.getIdCuenta();
-            fila[7] = transaccionesListas.getNombreCuenta();
+            fila[5] = transaccionesListas.getHora();
+            fila[6] = transaccionesListas.getDescripcion();
+            fila[7] = transaccionesListas.getIdCuenta();
+            fila[8] = transaccionesListas.getNombreCuenta();
             modelo.addRow(fila);
         }
         jTableTranssaciomes.updateUI();
@@ -211,6 +213,7 @@ public class InternalFrameTransacciones extends javax.swing.JInternalFrame imple
 
         setBackground(new java.awt.Color(0, 153, 153));
         setClosable(true);
+        setTitle("Transsacciones");
         getContentPane().setLayout(new java.awt.CardLayout());
 
         jPanel1.setBackground(new java.awt.Color(102, 153, 255));
@@ -237,6 +240,12 @@ public class InternalFrameTransacciones extends javax.swing.JInternalFrame imple
 
         jLabel5.setText("Cuenta");
         jPanel2.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(51, 11, -1, -1));
+
+        jTextFieldMonto.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTextFieldMontoKeyTyped(evt);
+            }
+        });
         jPanel2.add(jTextFieldMonto, new org.netbeans.lib.awtextra.AbsoluteConstraints(51, 77, 163, -1));
 
         jLabel1.setText("Monto");
@@ -370,7 +379,9 @@ public class InternalFrameTransacciones extends javax.swing.JInternalFrame imple
 
         TransaccionesDao transaccionFactory = FactoryDao.getFactoryInstance().getNewTransaccionesDao();
         CuentaDao cuentaFactory = FactoryDao.getFactoryInstance().getNewCuentaDao();
-
+        if (jTextFieldMonto.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Monto no puede estar vacio");
+        }
         try {
             Transacciones trans = new Transacciones();
             Categoria categoria = (Categoria) jComboBoxCategorias.getSelectedItem();
@@ -395,7 +406,6 @@ public class InternalFrameTransacciones extends javax.swing.JInternalFrame imple
                 trans.setHora(jTextFieldHora.getText());
                 trans.setDescripcion(jTextAreaDescripcion.getText());
                 trans.setIdCuenta(cuenta.getId_cuenta());
-                
 
                 JOptionPane.showMessageDialog(this, "Compra Existosa con " + MontoComprar);
 
@@ -469,11 +479,12 @@ public class InternalFrameTransacciones extends javax.swing.JInternalFrame imple
                 try {
                     Object id = jTableTranssaciomes.getValueAt(a, 0);
                     Object idCategoria = jTableTranssaciomes.getValueAt(a, 1);
-                    Object idCuenta = jTableTranssaciomes.getValueAt(a, 6);
-                    Object NombreCuenta = jTableTranssaciomes.getValueAt(a, 7);
+                    Object idCuenta = jTableTranssaciomes.getValueAt(a, 7);
+                    System.out.println(idCuenta);
+                    Object NombreCuenta = jTableTranssaciomes.getValueAt(a, 8);
                     Object Monto = jTableTranssaciomes.getValueAt(a, 3);
-
-                    float SaldoCuenta = cuentaFactory.get((int) idCuenta).getSaldoInicial();
+                    System.out.println("este es id"+cuentaFactory.get((int)idCuenta).getSaldoInicial());
+                    float SaldoCuenta = cuentaFactory.get((int)idCuenta).getSaldoInicial();
 
                     float saldoFinal = SaldoCuenta + (float) Monto;
 
@@ -525,6 +536,14 @@ public class InternalFrameTransacciones extends javax.swing.JInternalFrame imple
             JOptionPane.showMessageDialog(this, "No son molestos los popups?");
         }
     }//GEN-LAST:event_jTableTranssaciomesMousePressed
+
+    private void jTextFieldMontoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFieldMontoKeyTyped
+        char caracter = evt.getKeyChar();
+        if (((caracter < '0') || (caracter > '9')) && (caracter != '\b' /*corresponde a BACK_SPACE*/)) {
+            evt.consume(); // ignorar el evento de teclado
+        }
+
+    }//GEN-LAST:event_jTextFieldMontoKeyTyped
 
     public void CargarComboBoxCuenta() {
         CuentaDao objDao = FactoryDao.getFactoryInstance().getNewCuentaDao();
