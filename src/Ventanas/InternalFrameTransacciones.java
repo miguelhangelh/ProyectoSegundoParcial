@@ -413,6 +413,8 @@ public class InternalFrameTransacciones extends javax.swing.JInternalFrame imple
                 cuentaFactory.update(cuenta);
                 cuentaFactory.get(idcuenta);
                 cargarDetallesCuenta();
+                jTextFieldMonto.setText("");
+                    jTextAreaDescripcion.setText("");
             }
 
         } catch (ParseException ex) {
@@ -497,7 +499,7 @@ public class InternalFrameTransacciones extends javax.swing.JInternalFrame imple
                     ActualizarTabla();
                     cargarDetallesCuenta();
                     JOptionPane.showMessageDialog(null, "Registro Eliminado");
-
+                    
                 } catch (Exception ex) {
                     Logger.getLogger(InternalFrameTransacciones.class.getName()).log(Level.SEVERE, null, ex);
                 }
