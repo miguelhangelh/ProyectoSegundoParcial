@@ -21,6 +21,15 @@ public class TransaccionesListas {
     private int idCategoria;
     private String descripcion;
     private String NombreCuenta;
+    private String Hora;
+
+    public String getHora() {
+        return Hora;
+    }
+
+    public void setHora(String Hora) {
+        this.Hora = Hora;
+    }
     
     public TransaccionesListas() {
     }

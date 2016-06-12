@@ -15,6 +15,15 @@ public class Transacciones {
     private String fecha;
     private String descripcion;
     private int idCuenta;
+    private String Hora;
+
+    public String getHora() {
+        return Hora;
+    }
+
+    public void setHora(String Hora) {
+        this.Hora = Hora;
+    }
 
     public Transacciones() {
     }

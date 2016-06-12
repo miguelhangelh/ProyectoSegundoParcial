@@ -56,7 +56,9 @@ public class InternalFrameTransacciones extends javax.swing.JInternalFrame imple
         DefaultTabla();
         rellenarTabla();
         jPanel2.setVisible(false);
-        //OcultarColumnas();
+        OcultarColumnas();
+        cargarDetallesCuenta();
+
     }
 
     public void OcultarColumnas() {
@@ -70,9 +72,9 @@ public class InternalFrameTransacciones extends javax.swing.JInternalFrame imple
         jTableTranssaciomes.getColumnModel().getColumn(1).setMinWidth(0);
         jTableTranssaciomes.getColumnModel().getColumn(1).setPreferredWidth(0);
 
-        jTableTranssaciomes.getColumnModel().getColumn(6).setMaxWidth(0);
-        jTableTranssaciomes.getColumnModel().getColumn(6).setMinWidth(0);
-        jTableTranssaciomes.getColumnModel().getColumn(6).setPreferredWidth(0);
+        jTableTranssaciomes.getColumnModel().getColumn(7).setMaxWidth(0);
+        jTableTranssaciomes.getColumnModel().getColumn(7).setMinWidth(0);
+        jTableTranssaciomes.getColumnModel().getColumn(7).setPreferredWidth(0);
     }
 
     public void DefaultTabla() {
@@ -91,6 +93,7 @@ public class InternalFrameTransacciones extends javax.swing.JInternalFrame imple
         modelo.addColumn("Categoria");
         modelo.addColumn("monto");
         modelo.addColumn("fecha");
+        modelo.addColumn("Hora");
         modelo.addColumn("descripcion");
         modelo.addColumn("id_Cuenta");
         modelo.addColumn("Cuenta");
@@ -112,16 +115,17 @@ public class InternalFrameTransacciones extends javax.swing.JInternalFrame imple
         ArrayList<TransaccionesListas> list = new ArrayList<TransaccionesListas>();
         list = objDao.getList();
         for (int i = 0; i < list.size(); i++) {
-            Object[] fila = new Object[8];
+            Object[] fila = new Object[9];
 
             fila[0] = list.get(i).getIdTransacciones();
             fila[1] = list.get(i).getIdCategoria();
             fila[2] = list.get(i).getNombreCategoria();
             fila[3] = list.get(i).getMonto();
             fila[4] = list.get(i).getFecha();
-            fila[5] = list.get(i).getDescripcion();
-            fila[6] = list.get(i).getIdCuenta();
-            fila[7] = list.get(i).getNombreCuenta();
+            fila[5] = list.get(i).getHora();
+            fila[6] = list.get(i).getDescripcion();
+            fila[7] = list.get(i).getIdCuenta();
+            fila[8] = list.get(i).getNombreCuenta();
 
             tableModel.addRow(fila);
         }
@@ -163,6 +167,17 @@ public class InternalFrameTransacciones extends javax.swing.JInternalFrame imple
         }
     }
 
+    public void cargarDetallesCuenta() {
+        CuentaDao cuentaFactory = FactoryDao.getFactoryInstance().getNewCuentaDao();
+        Cuenta value = (Cuenta) jComboBoxCuenta.getSelectedItem();
+
+        int idcuenta = value.getId_cuenta();
+        Cuenta Detalles = cuentaFactory.get(idcuenta);
+        String nombre = Detalles.getNombre();
+        float saldo = Detalles.getSaldoInicial();
+        jTextAreaDetalles.setText("Nombre: " + nombre + "\n" + "Saldo: " + saldo);
+    }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -182,13 +197,17 @@ public class InternalFrameTransacciones extends javax.swing.JInternalFrame imple
         jLabel4 = new javax.swing.JLabel();
         jTextFieldHora = new javax.swing.JTextField();
         jTextFieldFecha = new javax.swing.JTextField();
+        jLabel7 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTableTranssaciomes = new javax.swing.JTable();
         jButtonEliminar = new javax.swing.JButton();
-        jButtonEditar = new javax.swing.JButton();
         jButtonGuardar = new javax.swing.JButton();
         jButtonNuevo = new javax.swing.JButton();
+        jPanel4 = new javax.swing.JPanel();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        jTextAreaDetalles = new javax.swing.JTextArea();
+        jLabel9 = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(0, 153, 153));
         setClosable(true);
@@ -204,10 +223,10 @@ public class InternalFrameTransacciones extends javax.swing.JInternalFrame imple
         jTextAreaDescripcion.setRows(5);
         jScrollPane2.setViewportView(jTextAreaDescripcion);
 
-        jPanel2.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(275, 31, 290, 204));
+        jPanel2.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 30, 180, 200));
 
         jLabel6.setText("Descripcion");
-        jPanel2.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(368, 11, -1, -1));
+        jPanel2.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 10, -1, -1));
 
         jComboBoxCuenta.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -234,11 +253,21 @@ public class InternalFrameTransacciones extends javax.swing.JInternalFrame imple
         jLabel4.setText("Hora");
         jPanel2.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(51, 195, -1, -1));
 
-        jTextFieldHora.setEditable(false);
+        jTextFieldHora.setEnabled(false);
         jPanel2.add(jTextFieldHora, new org.netbeans.lib.awtextra.AbsoluteConstraints(51, 215, 163, -1));
+
+        jTextFieldFecha.setEnabled(false);
+        jTextFieldFecha.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextFieldFechaActionPerformed(evt);
+            }
+        });
         jPanel2.add(jTextFieldFecha, new org.netbeans.lib.awtextra.AbsoluteConstraints(51, 169, 163, -1));
 
-        jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(34, 0, 590, 250));
+        jLabel7.setText("Detalles de mi cuenta");
+        jPanel2.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(462, 10, 120, -1));
+
+        jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(34, 0, 410, 250));
 
         jPanel3.setBackground(new java.awt.Color(102, 153, 255));
 
@@ -251,6 +280,17 @@ public class InternalFrameTransacciones extends javax.swing.JInternalFrame imple
 
             }
         ));
+        jTableTranssaciomes.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTableTranssaciomesMouseClicked(evt);
+            }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                jTableTranssaciomesMousePressed(evt);
+            }
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                jTableTranssaciomesMouseReleased(evt);
+            }
+        });
         jScrollPane1.setViewportView(jTableTranssaciomes);
 
         jButtonEliminar.setText("Eliminar");
@@ -259,8 +299,6 @@ public class InternalFrameTransacciones extends javax.swing.JInternalFrame imple
                 jButtonEliminarActionPerformed(evt);
             }
         });
-
-        jButtonEditar.setText("Editar");
 
         jButtonGuardar.setText("Guardar");
         jButtonGuardar.setEnabled(false);
@@ -282,36 +320,46 @@ public class InternalFrameTransacciones extends javax.swing.JInternalFrame imple
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap(33, Short.MAX_VALUE)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                        .addComponent(jButtonNuevo)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButtonGuardar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButtonEditar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButtonEliminar)
-                        .addGap(137, 137, 137))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 517, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap())))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButtonNuevo)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jButtonGuardar)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jButtonEliminar)
+                .addGap(265, 265, 265))
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(35, 35, 35)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 587, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(58, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButtonNuevo)
                     .addComponent(jButtonGuardar)
-                    .addComponent(jButtonEditar)
                     .addComponent(jButtonEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(19, Short.MAX_VALUE))
+                .addContainerGap(25, Short.MAX_VALUE))
         );
 
-        jPanel1.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 250, 560, 250));
+        jPanel1.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 250, 680, 250));
+
+        jPanel4.setBackground(new java.awt.Color(102, 153, 255));
+        jPanel4.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jTextAreaDetalles.setColumns(20);
+        jTextAreaDetalles.setFont(new java.awt.Font("Arial Rounded MT Bold", 1, 13)); // NOI18N
+        jTextAreaDetalles.setRows(5);
+        jScrollPane4.setViewportView(jTextAreaDetalles);
+
+        jPanel4.add(jScrollPane4, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 30, 210, 200));
+
+        jLabel9.setText("Detalles de cuenta");
+        jPanel4.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, -1, -1));
+
+        jPanel1.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 0, 230, 240));
 
         getContentPane().add(jPanel1, "card2");
 
@@ -320,22 +368,42 @@ public class InternalFrameTransacciones extends javax.swing.JInternalFrame imple
 
     private void jButtonGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonGuardarActionPerformed
 
-        TransaccionesDao objDao = FactoryDao.getFactoryInstance().getNewTransaccionesDao();
+        TransaccionesDao transaccionFactory = FactoryDao.getFactoryInstance().getNewTransaccionesDao();
+        CuentaDao cuentaFactory = FactoryDao.getFactoryInstance().getNewCuentaDao();
 
         try {
             Transacciones trans = new Transacciones();
             Categoria categoria = (Categoria) jComboBoxCategorias.getSelectedItem();
             Cuenta cuenta = (Cuenta) jComboBoxCuenta.getSelectedItem();
 
-            trans.setIdCategoria(categoria.getIdCategoria());
-            trans.setMonto(Integer.parseInt(jTextFieldMonto.getText()));
+            float SaldoCuentaIncial = cuenta.getSaldoInicial(); //200
+            float MontoComprar = Float.parseFloat(jTextFieldMonto.getText());//400
+            if (SaldoCuentaIncial < MontoComprar) {
+                JOptionPane.showMessageDialog(this, "usted no puede comprar con " + MontoComprar + "su cuenta tiene " + SaldoCuentaIncial);
+                System.out.println();
+            } else {
+                // resto el saldo unicial menos el comprar
+                float SaldoDescontado = SaldoCuentaIncial - MontoComprar;
+                int idcuenta = cuenta.getId_cuenta();
+                cuenta.setId_cuenta(idcuenta);
 
-            String fechaString = jTextFieldFecha.getText();
+                cuenta.setSaldoInicial(SaldoDescontado);
+                trans.setIdCategoria(categoria.getIdCategoria());
+                trans.setMonto(Integer.parseInt(jTextFieldMonto.getText()));
+                String fechaString = jTextFieldFecha.getText();
+                trans.setFecha(fechaString);
+                trans.setHora(jTextFieldHora.getText());
+                trans.setDescripcion(jTextAreaDescripcion.getText());
+                trans.setIdCuenta(cuenta.getId_cuenta());
+                
 
-            trans.setFecha(fechaString);
-            trans.setDescripcion(jTextAreaDescripcion.getText());
-            trans.setIdCuenta(cuenta.getId_cuenta());
-            objDao.insert(trans);
+                JOptionPane.showMessageDialog(this, "Compra Existosa con " + MontoComprar);
+
+                transaccionFactory.insert(trans);
+                cuentaFactory.update(cuenta);
+                cuentaFactory.get(idcuenta);
+                cargarDetallesCuenta();
+            }
 
         } catch (ParseException ex) {
 
@@ -349,9 +417,12 @@ public class InternalFrameTransacciones extends javax.swing.JInternalFrame imple
 
     private void jComboBoxCuentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxCuentaActionPerformed
         try {
-
+            CuentaDao cuentaFactory = FactoryDao.getFactoryInstance().getNewCuentaDao();
             Cuenta value = (Cuenta) jComboBoxCuenta.getSelectedItem();
-            System.out.println(value.getId_cuenta());
+            int idcuenta = value.getId_cuenta();
+            String nombre = value.getNombre();
+            float saldo = value.getSaldoInicial();
+            cargarDetallesCuenta();
         } catch (Exception e) {
             System.out.println(e);
 
@@ -362,7 +433,7 @@ public class InternalFrameTransacciones extends javax.swing.JInternalFrame imple
 
     private void jButtonNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonNuevoActionPerformed
         String a = jButtonNuevo.getText();
-        System.out.println(a);
+
         if (a.equalsIgnoreCase("Cancelar")) {
             jButtonGuardar.setEnabled(false);
             jPanel2.setVisible(false);
@@ -403,7 +474,7 @@ public class InternalFrameTransacciones extends javax.swing.JInternalFrame imple
                     Object Monto = jTableTranssaciomes.getValueAt(a, 3);
 
                     float SaldoCuenta = cuentaFactory.get((int) idCuenta).getSaldoInicial();
-                    System.out.println(Monto);
+
                     float saldoFinal = SaldoCuenta + (float) Monto;
 
                     entidadCuenta.setId_cuenta((int) idCuenta);
@@ -413,6 +484,7 @@ public class InternalFrameTransacciones extends javax.swing.JInternalFrame imple
                     cuentaFactory.update(entidadCuenta);
                     transaccionFactory.delete((int) id);
                     ActualizarTabla();
+                    cargarDetallesCuenta();
                     JOptionPane.showMessageDialog(null, "Registro Eliminado");
 
                 } catch (Exception ex) {
@@ -424,6 +496,35 @@ public class InternalFrameTransacciones extends javax.swing.JInternalFrame imple
         }
 
     }//GEN-LAST:event_jButtonEliminarActionPerformed
+
+    private void jTextFieldFechaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldFechaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextFieldFechaActionPerformed
+
+    private void jTableTranssaciomesMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableTranssaciomesMouseReleased
+        if (jTableTranssaciomes.getSelectedRows().length > 0) {
+            JOptionPane.showMessageDialog(this, "No son molestos los popups?");
+        }
+    }//GEN-LAST:event_jTableTranssaciomesMouseReleased
+
+    private void jTableTranssaciomesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableTranssaciomesMouseClicked
+
+        String cadena = "";
+
+        int row = jTableTranssaciomes.rowAtPoint(evt.getPoint());
+        if (row >= 0 && jTableTranssaciomes.isEnabled()) {
+            for (int i = 0; i < jTableTranssaciomes.getColumnCount(); i++) {
+                cadena = cadena + " " + modelo.getValueAt(row, i).toString();
+            }
+        }
+        JOptionPane.showMessageDialog(null, cadena);
+    }//GEN-LAST:event_jTableTranssaciomesMouseClicked
+
+    private void jTableTranssaciomesMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableTranssaciomesMousePressed
+        if (jTableTranssaciomes.getSelectedRows().length > 0) {
+            JOptionPane.showMessageDialog(this, "No son molestos los popups?");
+        }
+    }//GEN-LAST:event_jTableTranssaciomesMousePressed
 
     public void CargarComboBoxCuenta() {
         CuentaDao objDao = FactoryDao.getFactoryInstance().getNewCuentaDao();
@@ -470,7 +571,6 @@ public class InternalFrameTransacciones extends javax.swing.JInternalFrame imple
         segundos = calendario.get(Calendar.SECOND) > 9 ? "" + calendario.get(Calendar.SECOND) : "0" + calendario.get(Calendar.SECOND);
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButtonEditar;
     private javax.swing.JButton jButtonEliminar;
     private javax.swing.JButton jButtonGuardar;
     private javax.swing.JButton jButtonNuevo;
@@ -482,13 +582,18 @@ public class InternalFrameTransacciones extends javax.swing.JInternalFrame imple
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JTable jTableTranssaciomes;
     private javax.swing.JTextArea jTextAreaDescripcion;
+    private javax.swing.JTextArea jTextAreaDetalles;
     private javax.swing.JTextField jTextFieldFecha;
     private javax.swing.JTextField jTextFieldHora;
     private javax.swing.JTextField jTextFieldMonto;
