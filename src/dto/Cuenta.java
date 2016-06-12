@@ -9,6 +9,7 @@ public class Cuenta {
 
     private int id_cuenta;
     private String nombre;
+    
     private float SaldoInicial;
 
     public Cuenta() {
@@ -31,6 +32,7 @@ public class Cuenta {
         return nombre;
     }
 
+   
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }

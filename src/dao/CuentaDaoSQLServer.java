@@ -2,6 +2,7 @@ package dao;
 
 import dal.Conexion;
 import dto.Cuenta;
+
 import java.awt.List;
 import java.util.ArrayList;
 import java.sql.ResultSet;
@@ -109,26 +110,5 @@ public class CuentaDaoSQLServer extends CuentaDao {
         return registros;
     }
 
-    /**
-     *
-     * @return
-     */
-    @Override
-    public Vector<Cuenta> CargarComboBox() {
-        Vector<Cuenta> oListItem = new Vector<>();
-        try {
-            Conexion objConexion = Conexion.getOrCreate();
-            String query = "{call sp_cuentaSelectAll()}";
-
-            ResultSet objResultSet = objConexion.ejecutarSelect(query);
-            while (objResultSet.next()) {
-                Cuenta obj = new Cuenta(objResultSet.getInt(1), objResultSet.getString(2));
-
-                oListItem.addElement(obj);
-            }
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        return oListItem;
-    }
+  
 }

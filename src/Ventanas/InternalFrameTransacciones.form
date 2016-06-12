@@ -243,9 +243,9 @@
                           <Component id="jButtonNuevo" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="jButtonGuardar" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="jButtonEditar" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="jButtonEliminar" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="jButtonEliminar" alignment="1" min="-2" pref="23" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace max="32767" attributes="0"/>
+                      <EmptySpace pref="19" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>

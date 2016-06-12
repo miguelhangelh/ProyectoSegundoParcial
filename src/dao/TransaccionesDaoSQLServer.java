@@ -100,10 +100,13 @@ public class TransaccionesDaoSQLServer extends TransaccionesDao {
 
             ResultSet objResultSet = objConexion.ejecutarSelect(query);
             while (objResultSet.next()) {
-                TransaccionesListas obj = new TransaccionesListas();
+                 TransaccionesListas obj = new TransaccionesListas();
 
                 int id_Transacciones = objResultSet.getInt("id_transacciones");
                 obj.setIdTransacciones(id_Transacciones);
+
+                int idCategoria = objResultSet.getInt("id_categoria");
+                obj.setIdCategoria(idCategoria);
 
                 String _nombre_Categoria = objResultSet.getString("nombre_categoria");
                 obj.setNombreCategoria(_nombre_Categoria);
@@ -113,6 +116,9 @@ public class TransaccionesDaoSQLServer extends TransaccionesDao {
 
                 String descripcion = objResultSet.getString("descripcion");
                 obj.setDescripcion(descripcion);
+
+                int idCuenta = objResultSet.getInt("id_cuenta");
+                obj.setIdCuenta(idCuenta);
 
                 String Nombre_cuenta = objResultSet.getString("nombre_cuenta");
                 obj.setNombreCuenta(Nombre_cuenta);

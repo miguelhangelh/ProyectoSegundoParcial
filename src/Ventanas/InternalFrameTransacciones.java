@@ -10,6 +10,7 @@ import dao.CuentaDao;
 import dao.TransaccionesDao;
 import dto.Categoria;
 import dto.Cuenta;
+
 import dto.Transacciones;
 import dto.TransaccionesListas;
 import factory.FactoryDao;
@@ -48,14 +49,30 @@ public class InternalFrameTransacciones extends javax.swing.JInternalFrame imple
         initComponents();
         CargarComboBoxCategoria();
         CargarComboBoxCuenta();
-        setUpTableData();
+
         h1 = new Thread(this);
         h1.start();
         mostrarfecha();
         DefaultTabla();
-        setUpTableData();
+        rellenarTabla();
         jPanel2.setVisible(false);
+        //OcultarColumnas();
+    }
 
+    public void OcultarColumnas() {
+        //Ocultar Id Transacciones
+
+        jTableTranssaciomes.getColumnModel().getColumn(0).setMaxWidth(0);
+        jTableTranssaciomes.getColumnModel().getColumn(0).setMinWidth(0);
+        jTableTranssaciomes.getColumnModel().getColumn(0).setPreferredWidth(0);
+
+        jTableTranssaciomes.getColumnModel().getColumn(1).setMaxWidth(0);
+        jTableTranssaciomes.getColumnModel().getColumn(1).setMinWidth(0);
+        jTableTranssaciomes.getColumnModel().getColumn(1).setPreferredWidth(0);
+
+        jTableTranssaciomes.getColumnModel().getColumn(6).setMaxWidth(0);
+        jTableTranssaciomes.getColumnModel().getColumn(6).setMinWidth(0);
+        jTableTranssaciomes.getColumnModel().getColumn(6).setPreferredWidth(0);
     }
 
     public void DefaultTabla() {
@@ -69,11 +86,13 @@ public class InternalFrameTransacciones extends javax.swing.JInternalFrame imple
 
         jTableTranssaciomes = new JTable(modelo); //Metemos el modelo dentro de la tabla
 
-        modelo.addColumn("id_transacciones"); //Añadimos las columnas a la tabla (tantas como queramos)
+        modelo.addColumn("id_transacciones");
+        modelo.addColumn("id_categoria");
         modelo.addColumn("Categoria");
-        modelo.addColumn("monto"); //Añadimos las columnas a la tabla (tantas como queramos)
+        modelo.addColumn("monto");
         modelo.addColumn("fecha");
         modelo.addColumn("descripcion");
+        modelo.addColumn("id_Cuenta");
         modelo.addColumn("Cuenta");
         //Llamamos al método que rellena la tabla con los datos de la base de datos
 
@@ -81,21 +100,57 @@ public class InternalFrameTransacciones extends javax.swing.JInternalFrame imple
         //hay que borrarlo del otro sitio, sino puede dar error de NullPointerException
     }
 
+    public void ActualizarTabla() {
+        DefaultTableModel tableModel = (DefaultTableModel) jTableTranssaciomes.getModel();
+        TransaccionesDao objDao = FactoryDao.getFactoryInstance().getNewTransaccionesDao();
+        /**
+         * additional code.
+         *
+         */
+        tableModel.setRowCount(0);
+        /**/
+        ArrayList<TransaccionesListas> list = new ArrayList<TransaccionesListas>();
+        list = objDao.getList();
+        for (int i = 0; i < list.size(); i++) {
+            Object[] fila = new Object[8];
+
+            fila[0] = list.get(i).getIdTransacciones();
+            fila[1] = list.get(i).getIdCategoria();
+            fila[2] = list.get(i).getNombreCategoria();
+            fila[3] = list.get(i).getMonto();
+            fila[4] = list.get(i).getFecha();
+            fila[5] = list.get(i).getDescripcion();
+            fila[6] = list.get(i).getIdCuenta();
+            fila[7] = list.get(i).getNombreCuenta();
+
+            tableModel.addRow(fila);
+        }
+        jTableTranssaciomes.setModel(tableModel);
+        /**
+         * additional code.
+         *
+         */
+        tableModel.fireTableDataChanged();
+        /**/
+    }
+
     void rellenarTabla() {
 
         TransaccionesDao objDao = FactoryDao.getFactoryInstance().getNewTransaccionesDao();
         ArrayList<TransaccionesListas> id = objDao.getList();
         for (TransaccionesListas transaccionesListas : id) {
-            Object[] fila = new Object[6];
+            Object[] fila = new Object[8];
             fila[0] = transaccionesListas.getIdTransacciones();
-            fila[1] = transaccionesListas.getNombreCategoria();
-            fila[2] = transaccionesListas.getMonto();
-            fila[3] = transaccionesListas.getFecha();
-            fila[4] = transaccionesListas.getDescripcion();
-            fila[5] = transaccionesListas.getNombreCuenta();
+            fila[1] = transaccionesListas.getIdCategoria();
+            fila[2] = transaccionesListas.getNombreCategoria();
+            fila[3] = transaccionesListas.getMonto();
+            fila[4] = transaccionesListas.getFecha();
+            fila[5] = transaccionesListas.getDescripcion();
+            fila[6] = transaccionesListas.getIdCuenta();
+            fila[7] = transaccionesListas.getNombreCuenta();
             modelo.addRow(fila);
         }
-
+        jTableTranssaciomes.updateUI();
     }
 
     /**
@@ -108,43 +163,6 @@ public class InternalFrameTransacciones extends javax.swing.JInternalFrame imple
         }
     }
 
-    public void setUpTableData() {
-        DefaultTableModel tableModel = (DefaultTableModel) jTableTranssaciomes.getModel();
-        TransaccionesDao objDao = FactoryDao.getFactoryInstance().getNewTransaccionesDao();
-        /**
-         * additional code.
-         *
-         */
-        tableModel.setRowCount(0);
-        /**/
-        ArrayList<TransaccionesListas> list = new ArrayList<TransaccionesListas>();
-        list = objDao.getList();
-        for (int i = 0; i < list.size(); i++) {
-            Object[] data = new Object[6];
-
-            data[0] = list.get(i).getIdTransacciones();
-            data[1] = list.get(i).getNombreCategoria();
-            data[2] = list.get(i).getMonto();
-            data[3] = list.get(i).getFecha();
-            data[4] = list.get(i).getDescripcion();
-            data[5] = list.get(i).getNombreCuenta();
-
-            tableModel.addRow(data);
-        }
-        jTableTranssaciomes.setModel(tableModel);
-        /**
-         * additional code.
-         *
-         */
-        tableModel.fireTableDataChanged();
-        /**/
-    }
-
-    /**
-     * This method is called from within the constructor to initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is always
-     * regenerated by the Form Editor.
-     */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -289,8 +307,8 @@ public class InternalFrameTransacciones extends javax.swing.JInternalFrame imple
                     .addComponent(jButtonNuevo)
                     .addComponent(jButtonGuardar)
                     .addComponent(jButtonEditar)
-                    .addComponent(jButtonEliminar))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jButtonEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(19, Short.MAX_VALUE))
         );
 
         jPanel1.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 250, 560, 250));
@@ -318,7 +336,7 @@ public class InternalFrameTransacciones extends javax.swing.JInternalFrame imple
             trans.setDescripcion(jTextAreaDescripcion.getText());
             trans.setIdCuenta(cuenta.getId_cuenta());
             objDao.insert(trans);
-            setUpTableData();
+
         } catch (ParseException ex) {
 
             ex.printStackTrace();
@@ -326,7 +344,7 @@ public class InternalFrameTransacciones extends javax.swing.JInternalFrame imple
         } catch (Exception ex) {
             Logger.getLogger(InternalFrameTransacciones.class.getName()).log(Level.SEVERE, null, ex);
         }
-        rellenarTabla();
+        ActualizarTabla();
     }//GEN-LAST:event_jButtonGuardarActionPerformed
 
     private void jComboBoxCuentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxCuentaActionPerformed
@@ -362,7 +380,7 @@ public class InternalFrameTransacciones extends javax.swing.JInternalFrame imple
     private void jButtonEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEliminarActionPerformed
         DefaultTableModel model = (DefaultTableModel) jTableTranssaciomes.getModel();
         TransaccionesDao transaccionFactory = FactoryDao.getFactoryInstance().getNewTransaccionesDao();
-        CuentaDao DaocuentaFactory = FactoryDao.getFactoryInstance().getNewCuentaDao();
+        CuentaDao cuentaFactory = FactoryDao.getFactoryInstance().getNewCuentaDao();
         Cuenta entidadCuenta = new Cuenta();
         int a = jTableTranssaciomes.getSelectedRow();
 
@@ -377,11 +395,29 @@ public class InternalFrameTransacciones extends javax.swing.JInternalFrame imple
             //Sección 5 
             if (JOptionPane.OK_OPTION == confirmar) {
 
-                Object id = jTableTranssaciomes.getValueAt(a, 0);
-                Object Monto = jTableTranssaciomes.getValueAt(a, 2);
-                transaccionFactory.delete((int) id);
-                JOptionPane.showMessageDialog(null, "Registro Eliminado");
-                setUpTableData();
+                try {
+                    Object id = jTableTranssaciomes.getValueAt(a, 0);
+                    Object idCategoria = jTableTranssaciomes.getValueAt(a, 1);
+                    Object idCuenta = jTableTranssaciomes.getValueAt(a, 6);
+                    Object NombreCuenta = jTableTranssaciomes.getValueAt(a, 7);
+                    Object Monto = jTableTranssaciomes.getValueAt(a, 3);
+
+                    float SaldoCuenta = cuentaFactory.get((int) idCuenta).getSaldoInicial();
+                    System.out.println(Monto);
+                    float saldoFinal = SaldoCuenta + (float) Monto;
+
+                    entidadCuenta.setId_cuenta((int) idCuenta);
+                    entidadCuenta.setNombre((String) NombreCuenta);
+                    entidadCuenta.setSaldoInicial(saldoFinal);
+
+                    cuentaFactory.update(entidadCuenta);
+                    transaccionFactory.delete((int) id);
+                    ActualizarTabla();
+                    JOptionPane.showMessageDialog(null, "Registro Eliminado");
+
+                } catch (Exception ex) {
+                    Logger.getLogger(InternalFrameTransacciones.class.getName()).log(Level.SEVERE, null, ex);
+                }
 
             }
 
@@ -394,6 +430,7 @@ public class InternalFrameTransacciones extends javax.swing.JInternalFrame imple
         ArrayList<Cuenta> id = objDao.getList();
 
         for (int i = 0; i < id.size(); i++) {
+
             jComboBoxCuenta.addItem(id.get(i));
 
         }

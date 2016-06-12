@@ -21,7 +21,7 @@ public class TransaccionesListas {
     private int idCategoria;
     private String descripcion;
     private String NombreCuenta;
-
+    
     public TransaccionesListas() {
     }
 
@@ -73,4 +73,20 @@ public class TransaccionesListas {
         this.NombreCuenta = NombreCuenta;
     }
 
+    public int getIdCuenta() {
+        return idCuenta;
+    }
+
+    public void setIdCuenta(int idCuenta) {
+        this.idCuenta = idCuenta;
+    }
+
+    public int getIdCategoria() {
+        return idCategoria;
+    }
+
+    public void setIdCategoria(int idCategoria) {
+        this.idCategoria = idCategoria;
+    }
+    
 }

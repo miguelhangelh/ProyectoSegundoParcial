@@ -1,6 +1,7 @@
 package dao;
 
 import dto.Cuenta;
+
 import java.awt.List;
 import java.util.ArrayList;
 import java.util.Vector;
@@ -18,7 +19,7 @@ public abstract class CuentaDao {
 	public abstract void delete(int id);
 
 	public abstract ArrayList<Cuenta> getList();
-        public abstract Vector<Cuenta> CargarComboBox();
+       
 	public abstract Cuenta get(int id);
 
 }
