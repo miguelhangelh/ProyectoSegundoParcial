@@ -53,7 +53,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
         jDesktopPane1.setBackground(new java.awt.Color(0, 153, 153));
 
-        jPanel2.setBackground(new java.awt.Color(0, 153, 153));
+        jPanel2.setBackground(new java.awt.Color(102, 153, 255));
 
         jPanel1.setBackground(new java.awt.Color(0, 102, 102));
         jPanel1.setForeground(new java.awt.Color(255, 255, 255));
@@ -165,6 +165,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             int x = (jDesktopPane1.getWidth() / 2) - internalFrame.getWidth() / 2;
             int y = (jDesktopPane1.getHeight() / 2) - internalFrame.getHeight() / 2;
             jDesktopPane1.add(internalFrame);
+            internalFrame.setSize(708, 520);
             internalFrame.setLocation(x, y);
             internalFrame.show();
         }
