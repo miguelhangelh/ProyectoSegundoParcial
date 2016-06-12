@@ -17,6 +17,8 @@ public class TransaccionesListas {
     private String nombreCategoria;
     private float monto;
     private Date fecha;
+    private int idCuenta;
+    private int idCategoria;
     private String descripcion;
     private String NombreCuenta;
 

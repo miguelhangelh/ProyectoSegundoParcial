@@ -361,8 +361,9 @@ public class InternalFrameTransacciones extends javax.swing.JInternalFrame imple
 
     private void jButtonEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEliminarActionPerformed
         DefaultTableModel model = (DefaultTableModel) jTableTranssaciomes.getModel();
-        TransaccionesDao objDao = FactoryDao.getFactoryInstance().getNewTransaccionesDao();
-
+        TransaccionesDao transaccionFactory = FactoryDao.getFactoryInstance().getNewTransaccionesDao();
+        CuentaDao DaocuentaFactory = FactoryDao.getFactoryInstance().getNewCuentaDao();
+        Cuenta entidadCuenta = new Cuenta();
         int a = jTableTranssaciomes.getSelectedRow();
 
         if (a < 0) {
@@ -377,13 +378,10 @@ public class InternalFrameTransacciones extends javax.swing.JInternalFrame imple
             if (JOptionPane.OK_OPTION == confirmar) {
 
                 Object id = jTableTranssaciomes.getValueAt(a, 0);
-                System.out.println(id);
-                objDao.delete((int)id);
-               
-
-                //Sección 7
+                Object Monto = jTableTranssaciomes.getValueAt(a, 2);
+                transaccionFactory.delete((int) id);
                 JOptionPane.showMessageDialog(null, "Registro Eliminado");
-                 setUpTableData();
+                setUpTableData();
 
             }
 
