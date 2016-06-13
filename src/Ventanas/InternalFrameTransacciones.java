@@ -259,6 +259,11 @@ public class InternalFrameTransacciones extends javax.swing.JInternalFrame imple
         jLabel2.setText("Categoria");
         jPanel2.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(51, 103, -1, -1));
 
+        jComboBoxCategorias.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jComboBoxCategoriasMouseClicked(evt);
+            }
+        });
         jPanel2.add(jComboBoxCategorias, new org.netbeans.lib.awtextra.AbsoluteConstraints(51, 123, 163, -1));
 
         jLabel3.setText("Fecha");
@@ -283,6 +288,11 @@ public class InternalFrameTransacciones extends javax.swing.JInternalFrame imple
 
         jButton1.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
         jButton1.setText("Nuevo Categoria");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
         jPanel2.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 100, 110, 20));
 
         jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(34, 0, 410, 250));
@@ -562,6 +572,24 @@ public class InternalFrameTransacciones extends javax.swing.JInternalFrame imple
 
     }//GEN-LAST:event_jTextFieldMontoKeyTyped
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        InterfalFrameCategorias internalFrame = new InterfalFrameCategorias();
+
+        if (internalFrame.isShowing()) {
+            JOptionPane.showMessageDialog(null, "Ya Esta abierto!", "Advertencia", JOptionPane.ERROR_MESSAGE);
+        } else {
+           
+            VentanaPrincipal.jDesktopPane1.add(internalFrame);
+            internalFrame.setLocation(500, 150);
+            internalFrame.show();
+            internalFrame.toFront();
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jComboBoxCategoriasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jComboBoxCategoriasMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jComboBoxCategoriasMouseClicked
+
     public void CargarComboBoxCuenta() {
          log.debug("Cargando combo de los datos de cuenta");
         CuentaDao objDao = FactoryDao.getFactoryInstance().getNewCuentaDao();
@@ -593,7 +621,7 @@ public class InternalFrameTransacciones extends javax.swing.JInternalFrame imple
     }
 
     public void calcula() {
-         log.debug("Calculando la fecha si es AM o PM");
+         
         Calendar calendario = new GregorianCalendar();
         Date fechaHoraActual = new Date();
 
@@ -642,7 +670,7 @@ public class InternalFrameTransacciones extends javax.swing.JInternalFrame imple
     @Override
     public void run() {
         Thread ct = Thread.currentThread();
-        log.debug("Hilo corriendo para las horas");
+       
         while (ct == h1) {
              
             calcula();

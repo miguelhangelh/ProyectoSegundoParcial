@@ -48,7 +48,7 @@ public void mostrarfecha() {
         jLabelFecha.setText(año + "-" + mes + "-" + dia);
     }
    public void calcula() {
-         log.debug("Calculando la fecha si es AM o PM");
+        
         Calendar calendario = new GregorianCalendar();
         Date fechaHoraActual = new Date();
 
@@ -260,7 +260,7 @@ public void mostrarfecha() {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JDesktopPane jDesktopPane1;
+    public static javax.swing.JDesktopPane jDesktopPane1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabelFecha;
@@ -278,7 +278,7 @@ public void mostrarfecha() {
 @Override
     public void run() {
         Thread ct = Thread.currentThread();
-        log.debug("Hilo corriendo para las horas");
+       
         while (ct == h1) {
              
             calcula();

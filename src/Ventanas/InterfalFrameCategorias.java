@@ -5,10 +5,18 @@
  */
 package Ventanas;
 
+import static Ventanas.InternalFrameTransacciones.log;
 import dao.CategoriaDao;
+import dao.TransaccionesDao;
 import dto.Categoria;
+import dto.TransaccionesListas;
 import factory.FactoryDao;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
+
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+import org.apache.log4j.Logger;
 
 /**
  *
@@ -16,11 +24,16 @@ import java.util.ArrayList;
  */
 public class InterfalFrameCategorias extends javax.swing.JInternalFrame {
 
+    static Logger log = Logger.getLogger(VentanaPrincipal.class.getName());
+    private DefaultTableModel modelo;
+
     public InterfalFrameCategorias() {
         initComponents();
+        DefaultTabla();
+        rellenarTabla();
+
     }
 
-   
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -34,6 +47,8 @@ public class InterfalFrameCategorias extends javax.swing.JInternalFrame {
         jTable1 = new javax.swing.JTable();
         jButton1 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
+
+        setClosable(true);
 
         jPanel1.setBackground(new java.awt.Color(102, 153, 255));
 
@@ -128,19 +143,131 @@ public class InterfalFrameCategorias extends javax.swing.JInternalFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+    public void DefaultTabla() {
+        log.debug("Iniciando la configuracion de las tablas");
+        modelo = new DefaultTableModel() {
+            @Override
+            public boolean isCellEditable(int fila, int columna) {
+                return false; //Con esto conseguimos que la tabla no se pueda editar
+            }
+        };
 
+        jTable1 = new JTable(modelo); //Metemos el modelo dentro de la tabla
+
+        modelo.addColumn("id_categoria");
+        modelo.addColumn("Nombre");
+        modelo.addColumn("Tipo");
+
+        //Llamamos al método que rellena la tabla con los datos de la base de datos
+        jScrollPane1.setViewportView(jTable1);//Esto añade la tabla al portView del scrollPane, si estaba puesto anteriormente
+        //hay que borrarlo del otro sitio, sino puede dar error de NullPointerException
+    }
+
+    void rellenarTabla() {
+        log.debug("Rellenando Datos de la tabla");
+
+        CategoriaDao objDao = FactoryDao.getFactoryInstance().getNewCategoriasDao();
+
+        ArrayList<Categoria> id = objDao.getList();
+        for (Categoria categoria : id) {
+            Object[] fila = new Object[3];
+
+            fila[0] = categoria.getIdCategoria();
+            fila[1] = categoria.getNombreCategoria();
+            fila[2] = categoria.getTipoCategoria();
+            modelo.addRow(fila);
+        }
+        jTable1.updateUI();
+    }
+
+    public void ActualizarTabla() {
+        log.debug("Actualizacion de datos de la tabla");
+        DefaultTableModel tableModel = (DefaultTableModel) jTable1.getModel();
+        CategoriaDao objDao = FactoryDao.getFactoryInstance().getNewCategoriasDao();
+        /**
+         * additional code.
+         *
+         */
+        tableModel.setRowCount(0);
+        /**/
+        ArrayList<Categoria> list = new ArrayList<Categoria>();
+        list = objDao.getList();
+        for (int i = 0; i < list.size(); i++) {
+            Object[] fila = new Object[3];
+
+            fila[0] = list.get(i).getIdCategoria();
+            fila[1] = list.get(i).getNombreCategoria();
+            fila[2] = list.get(i).getTipoCategoria();
+            ;
+
+            tableModel.addRow(fila);
+        }
+        jTable1.setModel(tableModel);
+        /**
+         * additional code.
+         *
+         */
+        tableModel.fireTableDataChanged();
+        /**/
+    }
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-         CategoriaDao objDao = FactoryDao.getFactoryInstance().getNewCategoriasDao();
-         Categoria entidadCategoria = new Categoria();
-           String value = (String) jComboBoxTipo.getSelectedItem();
-         entidadCategoria.setNombreCategoria(jTextFieldNombre.getText());
-         entidadCategoria.setTipoCategoria(title);
+        try {
+            InternalFrameTransacciones a = new InternalFrameTransacciones();
+            CategoriaDao objDao = FactoryDao.getFactoryInstance().getNewCategoriasDao();
+            Categoria entidadCategoria = new Categoria();
+            String value = (String) jComboBoxTipo.getSelectedItem();
+            entidadCategoria.setNombreCategoria(jTextFieldNombre.getText());
+            entidadCategoria.setTipoCategoria(value);
+            objDao.insert(entidadCategoria);
+            ActualizarTabla();
+            a.CargarComboBoxCategoria();
+        } catch (Exception ex) {
+
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        CategoriaDao objDao = FactoryDao.getFactoryInstance().getNewCategoriasDao();
+        int a = jTable1.getSelectedRow();
+
+        if (a < 0) {
+            log.debug("No se seleccion ningun dato de la tablas");
+            JOptionPane.showMessageDialog(this, "Debe seleccionar una fila de la tabla");
+
+        } else {
+
+            int confirmar = JOptionPane.showConfirmDialog(null, "Esta seguro que desea Eliminar el registro? ");
+
+            //Sección 5 
+            if (JOptionPane.OK_OPTION == confirmar) {
+
+                try {
+                    Object id = jTable1.getValueAt(a, 0);
+
+                    objDao.delete((int) id);
+                    ActualizarTabla();
+
+                    JOptionPane.showMessageDialog(null, "Registro Eliminado");
+                    log.debug("Se Se elimino  Correctamente");
+
+                } catch (Exception ex) {
+                    log.error("Error al momento de elimino por cualquier tipo de error" + ex);
+                }
+
+            }
+
+        }
     }//GEN-LAST:event_jButton3ActionPerformed
 
+    public void OcultarColumnas() {
+        //Ocultar Id Transacciones
+        log.debug("Ocultando Colummas de las llaves primeria y foraneas de la tabla");
+        jTable1.getColumnModel().getColumn(0).setMaxWidth(0);
+        jTable1.getColumnModel().getColumn(0).setMinWidth(0);
+        jTable1.getColumnModel().getColumn(0).setPreferredWidth(0);
+
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
