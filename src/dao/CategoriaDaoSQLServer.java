@@ -48,7 +48,7 @@ public class CategoriaDaoSQLServer extends CategoriaDao {
     @Override
     public void delete(int id) {
         Conexion objConexion = Conexion.getOrCreate();
-        StringBuffer query = new StringBuffer("{call sp_cuentaDelete(");
+        StringBuffer query = new StringBuffer("{call sp_CategoriaDelete(");
         query.append(id + ")");
         query.append("}");
         objConexion.ejecutarSimple(query.toString());

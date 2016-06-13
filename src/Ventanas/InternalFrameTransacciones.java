@@ -21,14 +21,14 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Vector;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.border.Border;
 import javax.swing.table.DefaultTableModel;
+import org.apache.log4j.Logger;
 
 /**
  *
@@ -36,6 +36,7 @@ import javax.swing.table.DefaultTableModel;
  */
 public class InternalFrameTransacciones extends javax.swing.JInternalFrame implements Runnable {
 
+    static Logger log = Logger.getLogger(VentanaPrincipal.class.getName());
     private DefaultTableModel modelo;
     private DefaultComboBoxModel model;
     Calendar calendario;
@@ -57,14 +58,15 @@ public class InternalFrameTransacciones extends javax.swing.JInternalFrame imple
         DefaultTabla();
         rellenarTabla();
         jPanel2.setVisible(false);
-      //  OcultarColumnas();
+        //  OcultarColumnas();
         cargarDetallesCuenta();
+        log.debug("Iniciando Pantalla Interfaz de Transacciones");
 
     }
 
     public void OcultarColumnas() {
         //Ocultar Id Transacciones
-
+        log.debug("Ocultando Colummas de las llaves primeria y foraneas de la tabla");
         jTableTranssaciomes.getColumnModel().getColumn(0).setMaxWidth(0);
         jTableTranssaciomes.getColumnModel().getColumn(0).setMinWidth(0);
         jTableTranssaciomes.getColumnModel().getColumn(0).setPreferredWidth(0);
@@ -79,7 +81,7 @@ public class InternalFrameTransacciones extends javax.swing.JInternalFrame imple
     }
 
     public void DefaultTabla() {
-
+        log.debug("Iniciando la configuracion de las tablas");
         modelo = new DefaultTableModel() {
             @Override
             public boolean isCellEditable(int fila, int columna) {
@@ -105,6 +107,7 @@ public class InternalFrameTransacciones extends javax.swing.JInternalFrame imple
     }
 
     public void ActualizarTabla() {
+        log.debug("Actualizacion de datos de la tabla");
         DefaultTableModel tableModel = (DefaultTableModel) jTableTranssaciomes.getModel();
         TransaccionesDao objDao = FactoryDao.getFactoryInstance().getNewTransaccionesDao();
         /**
@@ -140,7 +143,7 @@ public class InternalFrameTransacciones extends javax.swing.JInternalFrame imple
     }
 
     void rellenarTabla() {
-
+        log.debug("Rellenando Datos de la tabla");
         TransaccionesDao objDao = FactoryDao.getFactoryInstance().getNewTransaccionesDao();
         ArrayList<TransaccionesListas> id = objDao.getList();
         for (TransaccionesListas transaccionesListas : id) {
@@ -170,6 +173,7 @@ public class InternalFrameTransacciones extends javax.swing.JInternalFrame imple
     }
 
     public void cargarDetallesCuenta() {
+        log.debug("Actualizando detalles de las cuentas seleccionadas");
         CuentaDao cuentaFactory = FactoryDao.getFactoryInstance().getNewCuentaDao();
         Cuenta value = (Cuenta) jComboBoxCuenta.getSelectedItem();
 
@@ -200,6 +204,7 @@ public class InternalFrameTransacciones extends javax.swing.JInternalFrame imple
         jTextFieldHora = new javax.swing.JTextField();
         jTextFieldFecha = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTableTranssaciomes = new javax.swing.JTable();
@@ -251,7 +256,7 @@ public class InternalFrameTransacciones extends javax.swing.JInternalFrame imple
         jLabel1.setText("Monto");
         jPanel2.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(51, 57, -1, -1));
 
-        jLabel2.setText("Categorias");
+        jLabel2.setText("Categoria");
         jPanel2.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(51, 103, -1, -1));
 
         jPanel2.add(jComboBoxCategorias, new org.netbeans.lib.awtextra.AbsoluteConstraints(51, 123, 163, -1));
@@ -275,6 +280,10 @@ public class InternalFrameTransacciones extends javax.swing.JInternalFrame imple
 
         jLabel7.setText("Detalles de mi cuenta");
         jPanel2.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(462, 10, 120, -1));
+
+        jButton1.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
+        jButton1.setText("Nuevo Categoria");
+        jPanel2.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 100, 110, 20));
 
         jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(34, 0, 410, 250));
 
@@ -346,10 +355,10 @@ public class InternalFrameTransacciones extends javax.swing.JInternalFrame imple
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButtonNuevo)
-                    .addComponent(jButtonGuardar)
-                    .addComponent(jButtonEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButtonEliminar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButtonGuardar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButtonNuevo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(25, Short.MAX_VALUE))
         );
 
@@ -390,8 +399,9 @@ public class InternalFrameTransacciones extends javax.swing.JInternalFrame imple
             float SaldoCuentaIncial = cuenta.getSaldoInicial(); //200
             float MontoComprar = Float.parseFloat(jTextFieldMonto.getText());//400
             if (SaldoCuentaIncial < MontoComprar) {
+                 log.debug("Monto insufiente para la compra");
                 JOptionPane.showMessageDialog(this, "usted no puede comprar con " + MontoComprar + "su cuenta tiene " + SaldoCuentaIncial);
-                System.out.println();
+                
             } else {
                 // resto el saldo unicial menos el comprar
                 float SaldoDescontado = SaldoCuentaIncial - MontoComprar;
@@ -414,21 +424,23 @@ public class InternalFrameTransacciones extends javax.swing.JInternalFrame imple
                 cuentaFactory.get(idcuenta);
                 cargarDetallesCuenta();
                 jTextFieldMonto.setText("");
-                    jTextAreaDescripcion.setText("");
+                jTextAreaDescripcion.setText("");
+                log.debug("Se guardo todos los datos de la trassaccion sin errores");
             }
 
         } catch (ParseException ex) {
 
-            ex.printStackTrace();
+            log.error("Error al convertir datos" + ex);
 
         } catch (Exception ex) {
-            Logger.getLogger(InternalFrameTransacciones.class.getName()).log(Level.SEVERE, null, ex);
+            log.error("Error de insercion" + ex);
         }
         ActualizarTabla();
     }//GEN-LAST:event_jButtonGuardarActionPerformed
 
     private void jComboBoxCuentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxCuentaActionPerformed
         try {
+             log.debug("Seleccionado datos en el combo box");
             CuentaDao cuentaFactory = FactoryDao.getFactoryInstance().getNewCuentaDao();
             Cuenta value = (Cuenta) jComboBoxCuenta.getSelectedItem();
             int idcuenta = value.getId_cuenta();
@@ -468,11 +480,11 @@ public class InternalFrameTransacciones extends javax.swing.JInternalFrame imple
         int a = jTableTranssaciomes.getSelectedRow();
 
         if (a < 0) {
-
+             log.debug("No se seleccion ningun dato de la tablas");
             JOptionPane.showMessageDialog(this, "Debe seleccionar una fila de la tabla");
 
         } else {
-
+            
             int confirmar = JOptionPane.showConfirmDialog(null, "Esta seguro que desea Eliminar el registro? ");
 
             //Sección 5 
@@ -485,8 +497,8 @@ public class InternalFrameTransacciones extends javax.swing.JInternalFrame imple
                     System.out.println(idCuenta);
                     Object NombreCuenta = jTableTranssaciomes.getValueAt(a, 8);
                     Object Monto = jTableTranssaciomes.getValueAt(a, 3);
-                    System.out.println("este es id"+cuentaFactory.get((int)idCuenta).getSaldoInicial());
-                    float SaldoCuenta = cuentaFactory.get((int)idCuenta).getSaldoInicial();
+                    System.out.println("este es id" + cuentaFactory.get((int) idCuenta).getSaldoInicial());
+                    float SaldoCuenta = cuentaFactory.get((int) idCuenta).getSaldoInicial();
 
                     float saldoFinal = SaldoCuenta + (float) Monto;
 
@@ -499,9 +511,10 @@ public class InternalFrameTransacciones extends javax.swing.JInternalFrame imple
                     ActualizarTabla();
                     cargarDetallesCuenta();
                     JOptionPane.showMessageDialog(null, "Registro Eliminado");
-                    
+                     log.debug("Se Se elimino  Correctamente");
+
                 } catch (Exception ex) {
-                    Logger.getLogger(InternalFrameTransacciones.class.getName()).log(Level.SEVERE, null, ex);
+                     log.error("Error al momento de elimino por cualquier tipo de error" + ex);
                 }
 
             }
@@ -543,11 +556,14 @@ public class InternalFrameTransacciones extends javax.swing.JInternalFrame imple
         char caracter = evt.getKeyChar();
         if (((caracter < '0') || (caracter > '9')) && (caracter != '\b' /*corresponde a BACK_SPACE*/)) {
             evt.consume(); // ignorar el evento de teclado
+             log.debug("No se permiten letras");
         }
+         
 
     }//GEN-LAST:event_jTextFieldMontoKeyTyped
 
     public void CargarComboBoxCuenta() {
+         log.debug("Cargando combo de los datos de cuenta");
         CuentaDao objDao = FactoryDao.getFactoryInstance().getNewCuentaDao();
         ArrayList<Cuenta> id = objDao.getList();
 
@@ -559,6 +575,7 @@ public class InternalFrameTransacciones extends javax.swing.JInternalFrame imple
     }
 
     public void CargarComboBoxCategoria() {
+         log.debug("Cargando combo de los datos de Categorias");
         CategoriaDao objDao = FactoryDao.getFactoryInstance().getNewCategoriasDao();
         ArrayList<Categoria> id = objDao.getList();
         for (int i = 0; i < id.size(); i++) {
@@ -576,6 +593,7 @@ public class InternalFrameTransacciones extends javax.swing.JInternalFrame imple
     }
 
     public void calcula() {
+         log.debug("Calculando la fecha si es AM o PM");
         Calendar calendario = new GregorianCalendar();
         Date fechaHoraActual = new Date();
 
@@ -592,6 +610,7 @@ public class InternalFrameTransacciones extends javax.swing.JInternalFrame imple
         segundos = calendario.get(Calendar.SECOND) > 9 ? "" + calendario.get(Calendar.SECOND) : "0" + calendario.get(Calendar.SECOND);
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButtonEliminar;
     private javax.swing.JButton jButtonGuardar;
     private javax.swing.JButton jButtonNuevo;
@@ -623,7 +642,9 @@ public class InternalFrameTransacciones extends javax.swing.JInternalFrame imple
     @Override
     public void run() {
         Thread ct = Thread.currentThread();
+        log.debug("Hilo corriendo para las horas");
         while (ct == h1) {
+             
             calcula();
             jTextFieldHora.setText(hora + ":" + minutos + ":" + segundos + " " + ampm);
             try {
